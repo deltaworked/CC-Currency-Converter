@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+        }
+        /* Custom Colors matching the image */
+        .bg-custom-purple {
+            background-color: #4A148C; /* Deep Purple */
+        }
+        .text-custom-gold {
+            color: #F0E68C;
+        }
+        .bg-custom-gold {
+            background-color: #E6D5A8; /* Beige/Gold button color */
+        }
+        .bg-custom-gold:hover {
+            background-color: #dccba0;
+        }
+        
+        /* Custom Scrollbar for history */
+        .history-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .history-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        .history-scroll::-webkit-scrollbar-thumb {
+            background: #c1c1c1; 
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Header / Logo Area -->
+    <header class="w-full max-w-md flex items-center justify-center mb-6 gap-3">
+        <div class="bg-blue-600 text-white p-2 rounded-lg shadow-lg">
+            <i class="fa-solid fa-coins text-2xl"></i>
+        </div>
+        <h1 class="text-2xl font-bold text-gray-800 tracking-wide">GlobalExchange</h1>
+    </header>
+
+    <!-- Main Converter Card -->
+    <div class="bg-custom-purple p-6 rounded-2xl shadow-2xl w-full max-w-md relative overflow-hidden">
+        
+        <!-- Card Header -->
+        <h2 class="text-white text-center text-xl font-bold mb-6 tracking-wider border-b-2 border-white/20 pb-2 uppercase">
+            Currency Converter
+        </h2>
+
+        <!-- Amount Input -->
+        <div class="mb-4">
+            <label class="block text-white text-xs font-bold mb-2 uppercase tracking-wide">Enter Amount</label>
+            <input type="number" id="amount" value="1" min="0"
+                class="w-full p-3 rounded-lg border-none focus:ring-2 focus:ring-yellow-200 outline-none text-gray-800 text-lg font-medium shadow-inner placeholder-gray-400" 
+                placeholder="100">
+        </div>
+
+        <!-- Currency Selectors Row -->
+        <div class="flex items-end gap-2 mb-4">
+            
+            <!-- From Currency -->
+            <div class="flex-1">
+                <label class="block text-white text-xs font-bold mb-2 uppercase tracking-wide">From</label>
+                <div class="bg-white p-1 rounded-lg flex items-center shadow-inner cursor-pointer border border-transparent focus-within:border-yellow-200">
+                    <img id="from-flag" src="https://flagsapi.com/US/flat/64.png" alt="Flag" class="w-8 h-8 ml-1 object-contain">
+                    <select id="from-currency" class="w-full bg-transparent p-2 outline-none text-gray-800 font-bold cursor-pointer appearance-none">
+                        <!-- Options populated by JS -->
+                    </select>
+                    <i class="fa-solid fa-chevron-down text-gray-500 mr-2 text-xs"></i>
+                </div>
+            </div>
+
+            <!-- Swap Button -->
+            <button id="swap-btn" class="mb-1 text-white hover:text-yellow-200 transition-colors duration-200 p-2 rounded-full hover:bg-white/10" title="Swap Currencies">
+                <i class="fa-solid fa-arrow-right-arrow-left text-xl"></i>
+            </button>
+
+            <!-- To Currency -->
+            <div class="flex-1">
+                <label class="block text-white text-xs font-bold mb-2 uppercase tracking-wide">To</label>
+                <div class="bg-white p-1 rounded-lg flex items-center shadow-inner cursor-pointer border border-transparent focus-within:border-yellow-200">
+                    <img id="to-flag" src="https://flagsapi.com/IN/flat/64.png" alt="Flag" class="w-8 h-8 ml-1 object-contain">
+                    <select id="to-currency" class="w-full bg-transparent p-2 outline-none text-gray-800 font-bold cursor-pointer appearance-none">
+                         <!-- Options populated by JS -->
+                    </select>
+                    <i class="fa-solid fa-chevron-down text-gray-500 mr-2 text-xs"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exchange Rate Text -->
+        <div class="text-white text-sm font-medium mb-6 mt-4 pl-1" id="rate-display">
+            Getting exchange rate...
+        </div>
+
+        <!-- Action Button -->
+        <button id="convert-btn" class="w-full bg-custom-gold text-gray-900 font-bold py-3 rounded-lg shadow-lg transform active:scale-95 transition-all uppercase tracking-wide hover:shadow-xl">
+            Get Exchange Rate
+        </button>
+    </div>
+
+    <!-- History Section -->
+    <div class="w-full max-w-md mt-6">
+        <div class="flex justify-between items-center mb-2 px-1">
+            <h3 class="text-gray-600 font-bold text-sm uppercase">Conversion History</h3>
+            <button id="clear-history" class="text-xs text-red-500 hover:text-red-700 font-medium">Clear All</button>
+        </div>
+        <div id="history-list" class="bg-white rounded-xl shadow-md p-4 max-h-48 overflow-y-auto history-scroll space-y-2">
+            <p class="text-gray-400 text-center text-sm py-2">No history yet.</p>
+        </div>
+    </div>
+
+    <script>
+        // --- Configuration ---
+        // A comprehensive list of country codes for flags (Country Code Alpha-2)
+        // mapped to Currency Codes
+        const countryList = {
+            AED: "AE", AFN: "AF", XCD: "AG", ALL: "AL", AMD: "AM", ANG: "AN", AOA: "AO", AQD: "AQ", ARS: "AR", AUD: "AU", AZN: "AZ", BAM: "BA", BBD: "BB", BDT: "BD", XOF: "BE", BGN: "BG", BHD: "BH", BIF: "BI", BMD: "BM", BND: "BN", BOB: "BO", BRL: "BR", BSD: "BS", NOK: "BV", BWP: "BW", BYR: "BY", BZD: "BZ", CAD: "CA", CDF: "CD", XAF: "CF", CHF: "CH", CLP: "CL", CNY: "CN", COP: "CO", CRC: "CR", CUP: "CU", CVE: "CV", CYP: "CY", CZK: "CZ", DJF: "DJ", DKK: "DK", DOP: "DO", DZD: "DZ", ECS: "EC", EEK: "EE", EGP: "EG", ETB: "ET", EUR: "FR", FJD: "FJ", FKP: "FK", GBP: "GB", GEL: "GE", GGP: "GG", GHS: "GH", GIP: "GI", GMD: "GM", GNF: "GN", GTQ: "GT", GYD: "GY", HKD: "HK", HNL: "HN", HRK: "HR", HTG: "HT", HUF: "HU", IDR: "ID", ILS: "IL", INR: "IN", IQD: "IQ", IRR: "IR", ISK: "IS", JMD: "JM", JOD: "JO", JPY: "JP", KES: "KE", KGS: "KG", KHR: "KH", KMF: "KM", KPW: "KP", KRW: "KR", KWD: "KW", KYD: "KY", KZT: "KZ", LAK: "LA", LBP: "LB", LKR: "LK", LRD: "LR", LSL: "LS", LTL: "LT", LVL: "LV", LYD: "LY", MAD: "MA", MDL: "MD", MGA: "MG", MKD: "MK", MMK: "MM", MNT: "MN", MOP: "MO", MRO: "MR", MTL: "MT", MUR: "MU", MVR: "MV", MWK: "MW", MXN: "MX", MYR: "MY", MZN: "MZ", NAD: "NA", XPF: "NC", NGN: "NG", NIO: "NI", NPR: "NP", NZD: "NZ", OMR: "OM", PAB: "PA", PEN: "PE", PGK: "PG", PHP: "PH", PKR: "PK", PLN: "PL", PYG: "PY", QAR: "QA", RON: "RO", RSD: "RS", RUB: "RU", RWF: "RW", SAR: "SA", SBD: "SB", SCR: "SC", SDG: "SD", SEK: "SE", SGD: "SG", SHP: "SH", SLL: "SL", SOS: "SO", SRD: "SR", STD: "ST", SVC: "SV", SYP: "SY", SZL: "SZ", THB: "TH", TJS: "TJ", TMT: "TM", TND: "TN", TOP: "TO", TRY: "TR", TTD: "TT", TWD: "TW", TZS: "TZ", UAH: "UA", UGX: "UG", USD: "US", UYU: "UY", UZS: "UZ", VEF: "VE", VND: "VN", VUV: "VU", YER: "YE", ZAR: "ZA", ZMK: "ZM", ZWD: "ZW"
+        };
+
+        // DOM Elements
+        const dropList = document.querySelectorAll("select");
+        const fromCurrency = document.querySelector("#from-currency");
+        const toCurrency = document.querySelector("#to-currency");
+        const getButton = document.querySelector("#convert-btn");
+        const amountInput = document.querySelector("#amount");
+        const rateDisplay = document.querySelector("#rate-display");
+        const swapBtn = document.querySelector("#swap-btn");
+        const historyList = document.querySelector("#history-list");
+        const clearHistoryBtn = document.querySelector("#clear-history");
+
+        // --- Initialization ---
+
+        // Populate Select Options
+        for (let i = 0; i < dropList.length; i++) {
+            for (let currency_code in countryList) {
+                // Default selections
+                let selected = i == 0 ? (currency_code == "INR" ? "selected" : "") : (currency_code == "USD" ? "selected" : "");
+                
+                let optionTag = `<option value="${currency_code}" ${selected}>${currency_code}</option>`;
+                dropList[i].insertAdjacentHTML("beforeend", optionTag);
+            }
+            
+            // Event Listener for changing flags
+            dropList[i].addEventListener("change", (e) => {
+                loadFlag(e.target);
+                getExchangeRate(); // Auto update on currency change
+            });
+        }
+
+        // Initialize view
+        window.addEventListener("load", () => {
+            getExchangeRate();
+            loadHistory();
+        });
+
+        // --- Core Functions ---
+
+        function loadFlag(element) {
+            for (let code in countryList) {
+                if (code == element.value) {
+                    let imgTag = element.parentElement.querySelector("img");
+                    imgTag.src = `https://flagsapi.com/${countryList[code]}/flat/64.png`;
+                }
+            }
+        }
+
+        async function getExchangeRate() {
+            const amountVal = amountInput.value || 1;
+            
+            rateDisplay.innerText = "Getting exchange rate...";
+            
+            try {
+                let url = `https://api.exchangerate-api.com/v4/latest/${fromCurrency.value}`;
+                let response = await fetch(url);
+                let data = await response.json();
+                let exchangeRate = data.rates[toCurrency.value];
+                let totalExchangeRate = (amountVal * exchangeRate).toFixed(3); // 3 decimals like image
+                
+                // Update UI text
+                rateDisplay.innerText = `${amountVal} ${fromCurrency.value} = ${totalExchangeRate} ${toCurrency.value}`;
+                
+                // Save to history (debounced in real app, but here direct)
+                addToHistory(amountVal, fromCurrency.value, totalExchangeRate, toCurrency.value);
+
+            } catch (error) {
+                rateDisplay.innerText = "Something went wrong";
+                console.error(error);
+            }
+        }
+
+        // --- Event Listeners ---
+
+        // Button Click
+        getButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            getExchangeRate();
+        });
+
+        // Swap Icon Click
+        swapBtn.addEventListener("click", () => {
+            let tempCode = fromCurrency.value;
+            fromCurrency.value = toCurrency.value;
+            toCurrency.value = tempCode;
+            
+            loadFlag(fromCurrency);
+            loadFlag(toCurrency);
+            getExchangeRate();
+        });
+
+        // Auto-convert on typing (Input Event)
+        let typingTimer;
+        amountInput.addEventListener("input", () => {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(getExchangeRate, 500); // 500ms debounce
+        });
+
+        // Enter Key Handler
+        amountInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                getExchangeRate();
+            }
+        });
+
+        // --- History & LocalStorage Logic ---
+
+        function addToHistory(amount, from, result, to) {
+            let history = JSON.parse(localStorage.getItem("conversionHistory")) || [];
+            
+            const newEntry = {
+                amount, from, result, to,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            };
+
+            // Avoid duplicate of the very last entry to prevent spamming while typing
+            if (history.length > 0) {
+                const last = history[0];
+                if (last.amount === amount && last.from === from && last.to === to) {
+                    return; // Don't add if identical to last query
+                }
+            }
+
+            history.unshift(newEntry); // Add to top
+            if (history.length > 10) history.pop(); // Keep only last 10
+            
+            localStorage.setItem("conversionHistory", JSON.stringify(history));
+            renderHistory(history);
+        }
+
+        function loadHistory() {
+            let history = JSON.parse(localStorage.getItem("conversionHistory")) || [];
+            renderHistory(history);
+        }
+
+        function renderHistory(history) {
+            historyList.innerHTML = "";
+            if (history.length === 0) {
+                historyList.innerHTML = '<p class="text-gray-400 text-center text-sm py-2">No history yet.</p>';
+                return;
+            }
+
+            history.forEach(item => {
+                let div = document.createElement("div");
+                div.className = "flex justify-between items-center bg-gray-50 p-2 rounded border border-gray-100";
+                div.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-gray-500">${item.time}</span>
+                        <span class="text-sm font-medium text-gray-700">${item.amount} ${item.from}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-right text-gray-400 text-xs"></i>
+                        <span class="text-sm font-bold text-custom-purple">${item.result} ${item.to}</span>
+                    </div>
+                `;
+                historyList.appendChild(div);
+            });
+        }
+
+        clearHistoryBtn.addEventListener("click", () => {
+            localStorage.removeItem("conversionHistory");
+            renderHistory([]);
+        });
+
+    </script>
+</body>
+</html>
