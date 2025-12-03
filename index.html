@@ -238,66 +238,10 @@
             }
         });
 
-        // --- History & LocalStorage Logic ---
-
-        function addToHistory(amount, from, result, to) {
-            let history = JSON.parse(localStorage.getItem("conversionHistory")) || [];
-            
-            const newEntry = {
-                amount, from, result, to,
-                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            };
-
-            // Avoid duplicate of the very last entry to prevent spamming while typing
-            if (history.length > 0) {
-                const last = history[0];
-                if (last.amount === amount && last.from === from && last.to === to) {
-                    return; // Don't add if identical to last query
-                }
-            }
-
-            history.unshift(newEntry); // Add to top
-            if (history.length > 10) history.pop(); // Keep only last 10
-            
-            localStorage.setItem("conversionHistory", JSON.stringify(history));
-            renderHistory(history);
-        }
-
-        function loadHistory() {
-            let history = JSON.parse(localStorage.getItem("conversionHistory")) || [];
-            renderHistory(history);
-        }
-
-        function renderHistory(history) {
-            historyList.innerHTML = "";
-            if (history.length === 0) {
-                historyList.innerHTML = '<p class="text-gray-400 text-center text-sm py-2">No history yet.</p>';
-                return;
-            }
-
-            history.forEach(item => {
-                let div = document.createElement("div");
-                div.className = "flex justify-between items-center bg-gray-50 p-2 rounded border border-gray-100";
-                div.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs font-bold text-gray-500">${item.time}</span>
-                        <span class="text-sm font-medium text-gray-700">${item.amount} ${item.from}</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-arrow-right text-gray-400 text-xs"></i>
-                        <span class="text-sm font-bold text-custom-purple">${item.result} ${item.to}</span>
-                    </div>
-                `;
-                historyList.appendChild(div);
-            });
-        }
-
-        clearHistoryBtn.addEventListener("click", () => {
-            localStorage.removeItem("conversionHistory");
-            renderHistory([]);
-        });
+        
 
     </script>
 </body>
 
 </html>
+
