@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Currency Converter</title>
+    <link rel="icon" type="img/png"  href="images.png">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for Icons -->
@@ -29,8 +30,9 @@
         .bg-custom-gold:hover {
             background-color: #dccba0;
         }
+        
         #swap-btn {
-            background-color: white; 
+            
             color: #3E065F; /* Deep Purple icon */
             width: 44px; /* fixed size */
             height: 44px; /* fixed size */
@@ -100,9 +102,9 @@
             </div>
 
             <!-- Swap Button -->
-            <button id="swap-btn" class="mb-1 text-white hover:text-yellow-200 transition-colors duration-200 p-2 rounded-full hover:bg-white/10" title="Swap Currencies">
-                <i class="fa-solid fa-arrow-right-arrow-left text-xl"></i>
-            </button>
+             <button id="swap-btn" class="mb-1 p-0 rounded-full" title="Swap Currencies">
+                                <img id="swap-icon" src="Снимок экрана 2025-12-09 072819.png" alt="Swap" >
+            </button>
 
             <!-- To Currency -->
             <div class="flex-1">
