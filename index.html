@@ -1,253 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Currency Converter</title>
-    <link rel="icon" type="img/png"  href="images.png">
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f0f2f5;
-        }
-        /* Custom Colors matching the image */
-        .bg-custom-purple {
-            background-color: #3E065F; /* Deep Purple */
-        }
-        .text-custom-gold {
-            color: #F0E68C;
-        }
-        .bg-custom-gold {
-            background-color: #E6D5A8; /* Beige/Gold button color */
-        }
-        .bg-custom-gold:hover {
-            background-color: #dccba0;
-        }
-        
-        #swap-btn {
-            
-            color: #3E065F; /* Deep Purple icon */
-            width: 44px; /* fixed size */
-            height: 44px; /* fixed size */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%; /* circular */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* subtle shadow */
-            transition: transform 0.2s ease-in-out;
-            margin-bottom: 0; /* Align with input blocks */
-            cursor: pointer;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+    <link rel="icon" type="img/png"  href="images.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+        }
+        /* Custom Colors matching the image */
+        .bg-custom-purple {
+            background-color: #3E065F; /* Deep Purple */
+        }
+        .text-custom-gold {
+            color: #F0E68C;
+        }
+        .bg-custom-gold {
+            background-color: #E6D5A8; /* Beige/Gold button color */
+        }
+        .bg-custom-gold:hover {
+            background-color: #dccba0;
+        }
+        
+        #swap-btn {
+            
+            color: #3E065F; /* Deep Purple icon */
+            width: 44px; /* fixed size */
+            height: 44px; /* fixed size */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%; /* circular */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* subtle shadow */
+            transition: transform 0.2s ease-in-out;
+            margin-bottom: 0; /* Align with input blocks */
+            cursor: pointer;
+        }
 
-        /* Swap Button Animation on click */
-        #swap-btn.clicked {
-            animation: rotate 0.5s ease-in-out;
-        }
-        
-        @keyframes rotate {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
+        /* Swap Button Animation on click */
+        #swap-btn.clicked {
+            animation: rotate 0.5s ease-in-out;
+        }
+        
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4">
 
-    <!-- Header / Logo Area - REMOVED -->
-    
-    <!-- Main Converter Card -->
-    <div class="bg-custom-purple p-6 rounded-2xl shadow-2xl w-full max-w-md relative overflow-hidden">
-        
-        <!-- Card Header -->
-  <div class="flex justify-between items-end w-full border-b-2 border-white mb-6">
-  <span class="text-white text-[31px] font-bold uppercase tracking-widest">
-    Currency
-  </span>
-  <span class="text-white text-[31px] font-bold uppercase tracking-widest">
-    Converter
-  </span>
+    <!-- Header / Logo Area - REMOVED -->
+    
+    <!-- Main Converter Card -->
+    <div class="bg-custom-purple p-6 rounded-2xl shadow-2xl w-full max-w-md relative overflow-hidden">
+        
+        <!-- Card Header -->
+  <div class="flex justify-between items-end w-full border-b-2 border-white mb-6">
+  <span class="text-white text-[31px] font-bold uppercase tracking-widest">
+    Currency
+  </span>
+  <span class="text-white text-[31px] font-bold uppercase tracking-widest">
+    Converter
+  </span>
 </div>
 
-        <!-- Amount Input -->
-        <div class="mb-4">
-            <label class="block text-white text-xs font-bold mb-2 uppercase tracking-wide">Enter Amount</label>
-            <input type="number" id="amount" value="1" min="0"
-                class="w-full p-3 rounded-lg border-none focus:ring-2 focus:ring-yellow-200 outline-none text-gray-800 text-lg font-medium shadow-inner placeholder-gray-400" 
-                placeholder="100">
-        </div>
 
-        <!-- Currency Selectors Row -->
-        <div class="flex items-end gap-2 mb-4">
-            
-            <!-- From Currency -->
-            <div class="flex-1">
-                <label class="block text-white text-xs font-bold mb-2 uppercase tracking-wide">From</label>
-                <div class="bg-white p-1 rounded-lg flex items-center shadow-inner cursor-pointer border border-transparent focus-within:border-yellow-200">
-                    <img id="from-flag" src="https://flagsapi.com/US/flat/64.png" alt="Flag" class="w-8 h-8 ml-1 object-contain">
-                    <select id="from-currency" class="w-full bg-transparent p-2 outline-none text-gray-800 font-bold cursor-pointer appearance-none">
-                        <!-- Options populated by JS -->
-                    </select>
-                    <i class="fa-solid fa-chevron-down text-gray-500 mr-2 text-xs"></i>
-                </div>
-            </div>
 
-            <!-- Swap Button -->
-             <button id="swap-btn" class="mb-1 p-0 rounded-full" title="Swap Currencies">
+        <!-- Amount Input -->
+        <div class="mb-4">
+            <label class="block text-white text-xs font-bold mb-2 uppercase tracking-wide">Enter Amount</label>
+            <input type="number" id="amount" value="1" min="0"
+                class="w-full p-3 rounded-lg border-none focus:ring-2 focus:ring-yellow-200 outline-none text-gray-800 text-lg font-medium shadow-inner placeholder-gray-400" 
+                placeholder="100">
+        </div>
+
+        <!-- Currency Selectors Row -->
+        <div class="flex items-end gap-2 mb-4">
+            
+            <!-- From Currency -->
+            <div class="flex-1">
+                <label class="block text-white text-xs font-bold mb-2 uppercase tracking-wide">From</label>
+                <div class="bg-white p-1 rounded-lg flex items-center shadow-inner cursor-pointer border border-transparent focus-within:border-yellow-200">
+                    <img id="from-flag" src="https://flagsapi.com/US/flat/64.png" alt="Flag" class="w-8 h-8 ml-1 object-contain">
+                    <select id="from-currency" class="w-full bg-transparent p-2 outline-none text-gray-800 font-bold cursor-pointer appearance-none">
+                        <!-- Options populated by JS -->
+                    </select>
+                    <i class="fa-solid fa-chevron-down text-gray-500 mr-2 text-xs"></i>
+                </div>
+            </div>
+
+            <!-- Swap Button -->
+             <button id="swap-btn" class="mb-1 p-0 rounded-full" title="Swap Currencies">
                                 <img id="swap-icon" src="Снимок экрана 2025-12-09 072819.png" alt="Swap" >
             </button>
 
-            <!-- To Currency -->
-            <div class="flex-1">
-                <label class="block text-white text-xs font-bold mb-2 uppercase tracking-wide">To</label>
-                <div class="bg-white p-1 rounded-lg flex items-center shadow-inner cursor-pointer border border-transparent focus-within:border-yellow-200">
-                    <img id="to-flag" src="https://flagsapi.com/IN/flat/64.png" alt="Flag" class="w-8 h-8 ml-1 object-contain">
-                    <select id="to-currency" class="w-full bg-transparent p-2 outline-none text-gray-800 font-bold cursor-pointer appearance-none">
-                         <!-- Options populated by JS -->
-                    </select>
-                    <i class="fa-solid fa-chevron-down text-gray-500 mr-2 text-xs"></i>
-                </div>
-            </div>
-        </div>
+            <!-- To Currency -->
+            <div class="flex-1">
+                <label class="block text-white text-xs font-bold mb-2 uppercase tracking-wide">To</label>
+                <div class="bg-white p-1 rounded-lg flex items-center shadow-inner cursor-pointer border border-transparent focus-within:border-yellow-200">
+                    <img id="to-flag" src="https://flagsapi.com/IN/flat/64.png" alt="Flag" class="w-8 h-8 ml-1 object-contain">
+                    <select id="to-currency" class="w-full bg-transparent p-2 outline-none text-gray-800 font-bold cursor-pointer appearance-none">
+                         <!-- Options populated by JS -->
+                    </select>
+                    <i class="fa-solid fa-chevron-down text-gray-500 mr-2 text-xs"></i>
+                </div>
+            </div>
+        </div>
 
-        <!-- Exchange Rate Text -->
-        <div class="text-white text-sm font-medium mb-6 mt-4 pl-1" id="rate-display">
-            Getting exchange rate...
-        </div>
+        <!-- Exchange Rate Text -->
+        <div class="text-white text-sm font-medium mb-6 mt-4 pl-1" id="rate-display">
+            Getting exchange rate...
+        </div>
 
-        <!-- Action Button -->
-        <button id="convert-btn" class="w-full bg-custom-gold text-gray-900 font-bold py-3 rounded-lg shadow-lg transform active:scale-95 transition-all uppercase tracking-wide hover:shadow-xl">
-            Get Exchange Rate
-        </button>
-    </div>
+        <!-- Action Button -->
+        <button id="convert-btn" class="w-full bg-custom-gold text-gray-900 font-bold py-3 rounded-lg shadow-lg transform active:scale-95 transition-all uppercase tracking-wide hover:shadow-xl">
+            Get Exchange Rate
+        </button>
+    </div>
 
-    <!-- History Section - REMOVED -->
+    <!-- History Section - REMOVED -->
 
-    <script>
-        // --- Configuration ---
-        // A comprehensive list of country codes for flags (Country Code Alpha-2)
-        // mapped to Currency Codes
-        const countryList = {
-            AED: "AE", AFN: "AF", XCD: "AG", ALL: "AL", AMD: "AM", ANG: "AN", AOA: "AO", AQD: "AQ", ARS: "AR", AUD: "AU", AZN: "AZ", BAM: "BA", BBD: "BB", BDT: "BD", XOF: "BE", BGN: "BG", BHD: "BH", BIF: "BI", BMD: "BM", BND: "BN", BOB: "BO", BRL: "BR", BSD: "BS", NOK: "BV", BWP: "BW", BYR: "BY", BZD: "BZ", CAD: "CA", CDF: "CD", XAF: "CF", CHF: "CH", CLP: "CL", CNY: "CN", COP: "CO", CRC: "CR", CUP: "CU", CVE: "CV", CYP: "CY", CZK: "CZ", DJF: "DJ", DKK: "DK", DOP: "DO", DZD: "DZ", ECS: "EC", EEK: "EE", EGP: "EG", ETB: "ET", EUR: "FR", FJD: "FJ", FKP: "FK", GBP: "GB", GEL: "GE", GGP: "GG", GHS: "GH", GIP: "GI", GMD: "GM", GNF: "GN", GTQ: "GT", GYD: "GY", HKD: "HK", HNL: "HN", HRK: "HR", HTG: "HT", HUF: "HU", IDR: "ID", ILS: "IL", INR: "IN", IQD: "IQ", IRR: "IR", ISK: "IS", JMD: "JM", JOD: "JO", JPY: "JP", KES: "KE", KGS: "KG", KHR: "KH", KMF: "KM", KPW: "KP", KRW: "KR", KWD: "KW", KYD: "KY", KZT: "KZ", LAK: "LA", LBP: "LB", LKR: "LK", LRD: "LR", LSL: "LS", LTL: "LT", LVL: "LV", LYD: "LY", MAD: "MA", MDL: "MD", MGA: "MG", MKD: "MK", MMK: "MM", MNT: "MN", MOP: "MO", MRO: "MR", MTL: "MT", MUR: "MU", MVR: "MV", MWK: "MW", MXN: "MX", MYR: "MY", MZN: "MZ", NAD: "NA", XPF: "NC", NGN: "NG", NIO: "NI", NPR: "NP", NZD: "NZ", OMR: "OM", PAB: "PA", PEN: "PE", PGK: "PG", PHP: "PH", PKR: "PK", PLN: "PL", PYG: "PY", QAR: "QA", RON: "RO", RSD: "RS", RUB: "RU", RWF: "RW", SAR: "SA", SBD: "SB", SCR: "SC", SDG: "SD", SEK: "SE", SGD: "SG", SHP: "SH", SLL: "SL", SOS: "SO", SRD: "SR", STD: "ST", SVC: "SV", SYP: "SY", SZL: "SZ", THB: "TH", TJS: "TJ", TMT: "TM", TND: "TN", TOP: "TO", TRY: "TR", TTD: "TT", TWD: "TW", TZS: "TZ", UAH: "UA", UGX: "UG", USD: "US", UYU: "UY", UZS: "UZ", VEF: "VE", VND: "VN", VUV: "VU", YER: "YE", ZAR: "ZA", ZMK: "ZM", ZWD: "ZW"
-        };
+    <script>
+        // --- Configuration ---
+        // A comprehensive list of country codes for flags (Country Code Alpha-2)
+        // mapped to Currency Codes
+        const countryList = {
+            AED: "AE", AFN: "AF", XCD: "AG", ALL: "AL", AMD: "AM", ANG: "AN", AOA: "AO", AQD: "AQ", ARS: "AR", AUD: "AU", AZN: "AZ", BAM: "BA", BBD: "BB", BDT: "BD", XOF: "BE", BGN: "BG", BHD: "BH", BIF: "BI", BMD: "BM", BND: "BN", BOB: "BO", BRL: "BR", BSD: "BS", NOK: "BV", BWP: "BW", BYR: "BY", BZD: "BZ", CAD: "CA", CDF: "CD", XAF: "CF", CHF: "CH", CLP: "CL", CNY: "CN", COP: "CO", CRC: "CR", CUP: "CU", CVE: "CV", CYP: "CY", CZK: "CZ", DJF: "DJ", DKK: "DK", DOP: "DO", DZD: "DZ", ECS: "EC", EEK: "EE", EGP: "EG", ETB: "ET", EUR: "FR", FJD: "FJ", FKP: "FK", GBP: "GB", GEL: "GE", GGP: "GG", GHS: "GH", GIP: "GI", GMD: "GM", GNF: "GN", GTQ: "GT", GYD: "GY", HKD: "HK", HNL: "HN", HRK: "HR", HTG: "HT", HUF: "HU", IDR: "ID", ILS: "IL", INR: "IN", IQD: "IQ", IRR: "IR", ISK: "IS", JMD: "JM", JOD: "JO", JPY: "JP", KES: "KE", KGS: "KG", KHR: "KH", KMF: "KM", KPW: "KP", KRW: "KR", KWD: "KW", KYD: "KY", KZT: "KZ", LAK: "LA", LBP: "LB", LKR: "LK", LRD: "LR", LSL: "LS", LTL: "LT", LVL: "LV", LYD: "LY", MAD: "MA", MDL: "MD", MGA: "MG", MKD: "MK", MMK: "MM", MNT: "MN", MOP: "MO", MRO: "MR", MTL: "MT", MUR: "MU", MVR: "MV", MWK: "MW", MXN: "MX", MYR: "MY", MZN: "MZ", NAD: "NA", XPF: "NC", NGN: "NG", NIO: "NI", NPR: "NP", NZD: "NZ", OMR: "OM", PAB: "PA", PEN: "PE", PGK: "PG", PHP: "PH", PKR: "PK", PLN: "PL", PYG: "PY", QAR: "QA", RON: "RO", RSD: "RS", RUB: "RU", RWF: "RW", SAR: "SA", SBD: "SB", SCR: "SC", SDG: "SD", SEK: "SE", SGD: "SG", SHP: "SH", SLL: "SL", SOS: "SO", SRD: "SR", STD: "ST", SVC: "SV", SYP: "SY", SZL: "SZ", THB: "TH", TJS: "TJ", TMT: "TM", TND: "TN", TOP: "TO", TRY: "TR", TTD: "TT", TWD: "TW", TZS: "TZ", UAH: "UA", UGX: "UG", USD: "US", UYU: "UY", UZS: "UZ", VEF: "VE", VND: "VN", VUV: "VU", YER: "YE", ZAR: "ZA", ZMK: "ZM", ZWD: "ZW"
+        };
 
-        // DOM Elements
-        const dropList = document.querySelectorAll("select");
-        const fromCurrency = document.querySelector("#from-currency");
-        const toCurrency = document.querySelector("#to-currency");
-        const getButton = document.querySelector("#convert-btn");
-        const amountInput = document.querySelector("#amount");
-        const rateDisplay = document.querySelector("#rate-display");
-        const swapBtn = document.querySelector("#swap-btn");
-        // Removed history-related DOM elements
+        // DOM Elements
+        const dropList = document.querySelectorAll("select");
+        const fromCurrency = document.querySelector("#from-currency");
+        const toCurrency = document.querySelector("#to-currency");
+        const getButton = document.querySelector("#convert-btn");
+        const amountInput = document.querySelector("#amount");
+        const rateDisplay = document.querySelector("#rate-display");
+        const swapBtn = document.querySelector("#swap-btn");
+        // Removed history-related DOM elements
 
-        // --- Initialization ---
+        // --- Initialization ---
 
-        // Populate Select Options
-        for (let i = 0; i < dropList.length; i++) {
-            for (let currency_code in countryList) {
-                // Default selections
-                let selected = i == 0 ? (currency_code == "INR" ? "selected" : "") : (currency_code == "USD" ? "selected" : "");
-                
-                let optionTag = `<option value="${currency_code}" ${selected}>${currency_code}</option>`;
-                dropList[i].insertAdjacentHTML("beforeend", optionTag);
-            }
-            
-            // Event Listener for changing flags
-            dropList[i].addEventListener("change", (e) => {
-                loadFlag(e.target);
-                getExchangeRate(); // Auto update on currency change
-            });
-        }
+        // Populate Select Options
+        for (let i = 0; i < dropList.length; i++) {
+            for (let currency_code in countryList) {
+                // Default selections
+                let selected = i == 0 ? (currency_code == "INR" ? "selected" : "") : (currency_code == "USD" ? "selected" : "");
+                
+                let optionTag = `<option value="${currency_code}" ${selected}>${currency_code}</option>`;
+                dropList[i].insertAdjacentHTML("beforeend", optionTag);
+            }
+            
+            // Event Listener for changing flags
+            dropList[i].addEventListener("change", (e) => {
+                loadFlag(e.target);
+                getExchangeRate(); // Auto update on currency change
+            });
+        }
 
-        // Initialize view
-        window.addEventListener("load", () => {
-            getExchangeRate();
-            // Removed call to loadHistory()
-        });
+        // Initialize view
+        window.addEventListener("load", () => {
+            getExchangeRate();
+            // Removed call to loadHistory()
+        });
 
-        // --- Core Functions ---
+        // --- Core Functions ---
 
-        function loadFlag(element) {
-            for (let code in countryList) {
-                if (code == element.value) {
-                    let imgTag = element.parentElement.querySelector("img");
-                    imgTag.src = `https://flagsapi.com/${countryList[code]}/flat/64.png`;
-                }
-            }
-        }
+        function loadFlag(element) {
+            for (let code in countryList) {
+                if (code == element.value) {
+                    let imgTag = element.parentElement.querySelector("img");
+                    imgTag.src = `https://flagsapi.com/${countryList[code]}/flat/64.png`;
+                }
+            }
+        }
 
-        async function getExchangeRate() {
-            const amountVal = amountInput.value || 1;
-            
-            rateDisplay.innerText = "Getting exchange rate...";
-            
-            try {
-                let url = `https://api.exchangerate-api.com/v4/latest/${fromCurrency.value}`;
-                let response = await fetch(url);
-                let data = await response.json();
-                let exchangeRate = data.rates[toCurrency.value];
-                let totalExchangeRate = (amountVal * exchangeRate).toFixed(3); // 3 decimals like image
-                
-                // Update UI text
-                rateDisplay.innerText = `${amountVal} ${fromCurrency.value} = ${totalExchangeRate} ${toCurrency.value}`;
-                
-                // Removed call to addToHistory()
+        async function getExchangeRate() {
+            const amountVal = amountInput.value || 1;
+            
+            rateDisplay.innerText = "Getting exchange rate...";
+            
+            try {
+                let url = `https://api.exchangerate-api.com/v4/latest/${fromCurrency.value}`;
+                let response = await fetch(url);
+                let data = await response.json();
+                let exchangeRate = data.rates[toCurrency.value];
+                let totalExchangeRate = (amountVal * exchangeRate).toFixed(3); // 3 decimals like image
+                
+                // Update UI text
+                rateDisplay.innerText = `${amountVal} ${fromCurrency.value} = ${totalExchangeRate} ${toCurrency.value}`;
+                
+                // Removed call to addToHistory()
 
-            } catch (error) {
-                rateDisplay.innerText = "Something went wrong";
-                console.error(error);
-            }
-        }
+            } catch (error) {
+                rateDisplay.innerText = "Something went wrong";
+                console.error(error);
+            }
+        }
 
-        // --- Event Listeners ---
+        // --- Event Listeners ---
 
-        // Button Click
-        getButton.addEventListener("click", (e) => {
-            e.preventDefault();
-            getExchangeRate();
-        });
+        // Button Click
+        getButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            getExchangeRate();
+        });
 
-        // Swap Icon Click
-        swapBtn.addEventListener("click", () => {
-            let tempCode = fromCurrency.value;
-            fromCurrency.value = toCurrency.value;
-            toCurrency.value = tempCode;
-            
-            loadFlag(fromCurrency);
-            loadFlag(toCurrency);
-            getExchangeRate();
-        });
+        // Swap Icon Click
+        swapBtn.addEventListener("click", () => {
+            let tempCode = fromCurrency.value;
+            fromCurrency.value = toCurrency.value;
+            toCurrency.value = tempCode;
+            
+            loadFlag(fromCurrency);
+            loadFlag(toCurrency);
+            getExchangeRate();
+        });
 
-        // Auto-convert on typing (Input Event)
-        let typingTimer;
-        amountInput.addEventListener("input", () => {
-            clearTimeout(typingTimer);
-            typingTimer = setTimeout(getExchangeRate, 500); // 500ms debounce
-        });
+        // Auto-convert on typing (Input Event)
+        let typingTimer;
+        amountInput.addEventListener("input", () => {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(getExchangeRate, 500); // 500ms debounce
+        });
 
-        // Enter Key Handler
-        amountInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") {
-                e.preventDefault();
-                getExchangeRate();
-            }
-        });
+        // Enter Key Handler
+        amountInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                getExchangeRate();
+            }
+        });
 
-        // --- History & LocalStorage Logic - REMOVED ---
-        // The functions addToHistory, loadHistory, renderHistory, and the clearHistoryBtn listener 
-        // have all been removed.
+        // --- History & LocalStorage Logic - REMOVED ---
+        // The functions addToHistory, loadHistory, renderHistory, and the clearHistoryBtn listener 
+        // have all been removed.
 
-    </script>
+    </script>
 </body>
 </html>
-через мобильную версию у меня надпись currency converter не помешается .она вылезает за пределы.что делать?
