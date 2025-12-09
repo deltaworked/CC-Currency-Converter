@@ -59,21 +59,8 @@
                 transform: rotate(360deg);
             }
         }
-        /* CSS для мобильных устройств (по умолчанию) */
-    .header-title-container {
-        display: flex; /* Делаем его flex-контейнером */
-        flex-direction: column; /* Элементы идут сверху вниз */
-        align-items: flex-start; /* Выравнивание слева, если нужно */
-        justify-content: space-between; /* Для сохранения вашего justify-between, но по вертикали */
-    }
-
-    /* CSS для больших экранов (>= 640px, стандартный брейкпоинт Tailwind) */
-    @media (min-width: 640px) {
-        .header-title-container {
-            flex-direction: row; /* Элементы идут слева направо */
-            align-items: flex-end; /* Выравнивание по вашему оригиналу */
-        }
-    }
+       
+    
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4">
@@ -84,16 +71,16 @@
     <div class="bg-custom-purple p-6 rounded-2xl shadow-2xl w-full max-w-md relative overflow-hidden">
         
         <!-- Card Header -->
-  <div class="header-title-container w-full border-b-2 border-white mb-6">
-  <span class="text-white text-[31px] font-bold uppercase tracking-widest">
+<div class="flex justify-between items-end w-full border-b-2 border-white mb-6">
+  <span class="text-white text-2xl sm:text-[31px] font-bold uppercase tracking-widest">
     Currency
   </span>
-  <span class="text-white text-[31px] font-bold uppercase tracking-widest">
+  <span class="text-white text-2xl sm:text-[31px] font-bold uppercase tracking-widest">
     Converter
   </span>
 </div>
 </div>
-</div>
+
 
         <!-- Amount Input -->
         <div class="mb-4">
@@ -267,5 +254,6 @@
     </script>
 </body>
 </html>
+
 
 
